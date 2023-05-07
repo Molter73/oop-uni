@@ -1,0 +1,50 @@
+\documentclass{article}
+
+\usepackage{xcolor}
+\usepackage{tikz}
+\usepackage{graphicx}
+\usepackage{float}
+
+\begin{document}
+
+\section{Casos de uso}
+
+Dadas las condiciones del problema original se desarrollo el siguiente
+diagrama de casos de uso:
+
+\begin{figure}[H]
+    \centering
+    \scalebox{.75}{
+        \input{uml/tex/courses_002.tex}
+    }
+\end{figure}
+
+Podemos ver que habrá entonces 3 acciones posibles:
+\begin{itemize}
+    \item Un alumno puede anotarse en un curso.
+    \item Un profesor puede evaluar a un alumno.
+    \item Un tutor puede conseguir la nota media de un alumno.
+\end{itemize}
+
+\pagebreak
+De todas las acciones posibles, que un alumno se anote a un curso es la más
+elaborada, por lo tanto, podemos utilizar un diagrama de acitividad para
+entender mejor el proceso:
+\begin{figure}[H]
+    \centering
+    \scalebox{.75}{
+        \input{uml/tex/courses_001.tex}
+    }
+\end{figure}
+
+\pagebreak
+Finalmente, con el diagrama de casos de uso y el diagrama de acitividad, se
+puede plantear un diagrama de clases como el siguiente:
+\begin{figure}[H]
+    \centering
+    \scalebox{.5}{
+        \input{uml/tex/courses.tex}
+    }
+\end{figure}
+
+\end{document}

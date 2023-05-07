@@ -1,5 +1,10 @@
+# Java files
 *.class
 target/
 .settings/
 .project
 .classpath
+
+# LaTex build directories
+tex/
+build/
