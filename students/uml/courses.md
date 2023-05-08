@@ -4,6 +4,7 @@ class Asignatura {
     -String titulo
     -int creditos
     -String profesor
+    -int calificacionFinal
 }
 
 class Curso {
@@ -14,7 +15,7 @@ class Curso {
 class Estudiante {
     -String tutor
     -String titulacion
-    +int obtenerPromedio()
+    -Asignatura[] asignaturasAprobadas
     +Asignatura[] listarAsignaturasAprobadas()
 }
 
@@ -22,10 +23,15 @@ class Profesor {
     +int evaluar(Asignatura, Estudiante)
 }
 
+class Tutor {
+    +int obtenerPromedio(Estudiante)
+}
+
 Curso *--- "1..n" Asignatura
 Curso *-- "20" Estudiante
 Profesor "n" *--* "1" Asignatura
 Profesor -- Estudiante
+Tutor -- Estudiante
 
 @enduml
 

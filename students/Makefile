@@ -1,5 +1,5 @@
 all: deliverable.tex uml-diagrams
-	@mkdir build/
+	@mkdir -p build/
 	tectonic -X compile \
 		--synctex \
 		--keep-logs \
