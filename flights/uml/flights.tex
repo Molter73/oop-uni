@@ -1,0 +1,47 @@
+\documentclass{article}
+
+\usepackage{xcolor}
+\usepackage{tikz}
+\usepackage{graphicx}
+\usepackage{float}
+
+\begin{document}
+
+Basado en la descripción del ejercicio y el código provisto como ejemplo, se
+decidió crear 4 clases:
+\begin{itemize}
+    \item Flight: Contendrá la información básica de un vuelo.
+    \item Client: Tendrá la información referida a un cliente.
+    \item Booking: Vinculará un cliente con un vuelo para generar una reserva.
+    \item App: Contendrá la lógica principal de la aplicación.
+\end{itemize}
+
+La necesidad de la clase Flight resulta evidente del enunciado y viendo que
+la mayor parte de variables existentes en la aplicación se reliacionan
+directamente con ella.
+
+La clase Client decidió crearse pensando que a futuro podría necesitarse
+guardar más información de un cliente que sólo su número.
+
+Se eligió representar las reservas como una clase a parte que
+contiene el vuelo y el cliente que ha realizado la reserva. Se podría haber
+optado por tener las reservas vinculadas al cliente, pero si a
+futuro se quisiera implementar búsquedas del tipo reservas en el vuelo X,
+deberíamos recorrer todos los clientes para encontrar las reservas de un vuelo.
+Una situación similar se daría si las reservas se vinculan a un vuelo y
+queremos implementar una búsqueda de reservas para el cliente Y, deberíamos
+recorrer todos los vuelos para encontrar las reservas del cliente. Tenerlas
+como entidad separada pero con referencias a cliente y vuelo permite
+implementar ambas búsquedas recorriendo un sólo contenedor.
+
+Finalmente, la clase App crea los contenedores necesarios y les une con la
+lógica de negocio que permite crear reservas para los vuelos.
+
+\begin{figure}[H]
+    \centering
+    \scalebox{.5}{
+        \input{build/uml.tex}
+    }
+\end{figure}
+
+\end{document}
