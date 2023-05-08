@@ -1,0 +1,49 @@
+\documentclass[a4paper,notitlepage]{article}
+
+\usepackage{xcolor}
+\usepackage{tikz}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{fullpage}
+
+\begin{document}
+
+Esta versión de Mastermind utilizará juegos de 12 intentos con un total de
+5 clavijas por intento. La implementación se puede realizar completamente por
+composición, el elemento más pequeño será una clavija (Peg), la cual poseerá
+solamente un campo color. En base a la clavija, podemos crear una clase
+fila (Row) que poseerá un array de 5 clavijas. Podemos así definir un tablero
+(Board) como una agrupación de filas:
+
+\begin{itemize}
+    \item Un array de 12 filas contendrán los intentos que vaya utilizando el usuario.
+    \item Un segundo array de 12 filas tendrá las pistas para cada intento realizado.
+    \item Una última fila tendrá la solución al juego y no será accesible hasta que el juego termine.
+\end{itemize}
+
+Vemos entonces que el tablero tendrá un total de 25 filas. Con el propósito de
+poder jugar el juego, se implementará una clase Game, la cual preguntará al
+usuario cuántos juegos desea jugar e iterará esa cantidad de veces en la
+siguiente secuencia:
+
+\begin{enumerate}
+    \item Instanciar un tablero nuevo (el tablero generará el código a adivinar al instanciarse).
+    \item Se pedirá al usuario que ingrese la fila de clavijas que desea jugar.
+    \item Se pasará la fila al tablero mediante el método tryAnswer() y este devolverá la fila de pistas.
+    \item Si se adivinó el código o no hay más intentos, el juego termina y se actualiza la calificación, caso contrario vuelve al punto 2.
+\end{enumerate}
+
+Una vez terminados todos los juegos que el usuario quiere jugar, se imprimirá
+la calificación final por pantalla.
+
+\pagebreak
+Podemos entonces plantear un diagrama de clases como el siguiente:
+
+\begin{figure}[H]
+    \centering
+    \scalebox{.6}{
+        \input{build/uml.tex}
+    }
+\end{figure}
+
+\end{document}
