@@ -31,7 +31,7 @@ class Board {
     -bool codeGuessed
     +Board()
     +bool isGameOver()
-    +ArrayList<Row> tryAnswer(Row[])
+    +Row tryAnswer(Row)
     +Integer getFinalScore()
     +ArrayList<Row> getTriedCodes()
     +ArrayList<Row> getKeyCodes()
