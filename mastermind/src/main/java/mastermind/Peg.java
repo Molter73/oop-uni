@@ -1,14 +1,20 @@
 package mastermind;
 
+/**
+ * A representation of a peg in the MasterMind game.
+ *
+ * <p>Pegs only have an assigned, immutable {@link Color}
+ */
 public class Peg {
   Color color;
 
+  /**
+   * Construct a Peg, assigning it the provided color.
+   *
+   * @param color The color for the peg that is being created.
+   */
   public Peg(Color color) {
     this.color = color;
-  }
-
-  public Color getColor() {
-    return color;
   }
 
   @Override

@@ -5,16 +5,37 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;
 
-/** Hello world! */
+/**
+ * Main class for the MasterMind app.
+ *
+ * @author Mauro Ezequiel Moltrasio
+ */
 public class App {
   private BufferedReader br;
   private Integer score;
 
+  /**
+   * Main constructor.
+   *
+   * <p>Will initialize the score counter and create a stream for reading stdin.
+   */
   App() {
     br = new BufferedReader(new InputStreamReader(System.in));
     score = 0;
   }
 
+  /**
+   * Play a single MasterMind game.
+   *
+   * <p>A game is played by creating a board and asking the user for row attempts until the tries
+   * are exhausted or the secret code is guessed.
+   *
+   * <p>Once the game is done, the score for the game is returned.
+   *
+   * @return The final score as an Integer.
+   * @throws NumberFormatException When the input by the user is not a number.
+   * @throws IOException On system IO errors.
+   */
   private Integer playGame() throws NumberFormatException, IOException {
     Board board = new Board();
     Integer finalScore;
@@ -31,12 +52,27 @@ public class App {
     return finalScore;
   }
 
+  /**
+   * Ask the user for the number of rounds they want to play. Return the number of rounds as an
+   * integer.
+   *
+   * @return The number of rounds to play.
+   * @throws NumberFormatException When the input by the user is not a number.
+   * @throws IOException On system IO errors.
+   */
   private Integer getRounds() throws NumberFormatException, IOException {
     System.out.print("Ingrese el número de rondas que desea jugar: ");
 
     return Integer.parseInt(br.readLine());
   }
 
+  /**
+   * Asks the player for individual pegs in order to create a row to play.
+   *
+   * @return A row formed from the pegs chosen by the player.
+   * @throws NumberFormatException When the input by the user is not a number.
+   * @throws IOException On system IO errors.
+   */
   private Row getRowFromPlayer() throws NumberFormatException, IOException {
     Peg[] pegs = new Peg[Row.PEG_COUNT];
     Color[] colors = PlayableColor.values();
@@ -61,6 +97,15 @@ public class App {
     return new Row(pegs);
   }
 
+  /**
+   * Entry point to the MasterMind game.
+   *
+   * <p>Plays as many rounds of the game as the player wants and outputs the final score for them.
+   *
+   * @param args Arguments provided to the App. Currently ignored.
+   * @throws NumberFormatException When the input by the user is not a number.
+   * @throws IOException On system IO errors.
+   */
   public static void main(String[] args) throws NumberFormatException, IOException {
     App app = new App();
 

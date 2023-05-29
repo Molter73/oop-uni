@@ -1,4 +1,11 @@
-all: mastermind.tex uml-diagrams output-dir
+all: latex javadoc
+
+javadoc:
+	javadoc -d build/javadoc \
+		-sourcepath ../src/main/java/ \
+		-subpackages mastermind
+
+latex: mastermind.tex uml-diagrams output-dir
 	tectonic -X compile \
 		--synctex \
 		--keep-logs \

@@ -1,48 +1,54 @@
 @startuml
-enum Color {
+interface Color {
+   +getColor(): String
+}
+
+enum PlayableColor implements Color {
     +RED
     +BLUE
     +GREEN
     +YELLOW
     +PINK
     +BROWN
+}
+
+enum KeyColor implements Color {
     +WHITE
     +BLACK
     +EMPTY
 }
 
 class Peg {
-    -Color color
+    -color: Color
     +Peg(Color)
-    +Color getColor()
+    +getColor(): Color
 }
 
 class Row {
-    -Peg[] pegs
+    -pegs: Peg[]
     +Row(Peg[])
-    +Peg[] getPegs()
+    +getPegs(): Peg[]
 }
 
 class Board {
-    {static} Integer totalTries
-    -ArrayList<Row> triedCodes
-    -ArrayList<Row> keyCodes
-    -Row hiddenCode
-    -bool codeGuessed
-    +Board()
-    +bool isGameOver()
-    +Row tryAnswer(Row)
-    +Integer getFinalScore()
-    +ArrayList<Row> getTriedCodes()
-    +ArrayList<Row> getKeyCodes()
-    +Row getHiddenCode()
+    {static} totalTries: Integer
+    -triedCodes: ArrayList<Row>
+    -keyCodes: ArrayList<Row>
+    -hiddenCode: Row
+    -codeGuessed: bool
+    +isGameOver(): bool
+    +tryAnswer(Row): Row
+    +getFinalScore(): Integer
+    +getTriedCodes(): ArrayList<Row>
+    +getKeyCodes(): ArrayList<Row>
+    +getHiddenCode(): Row
 }
 
 class Game {
-    -Integer score
+    -score: Integer
     {static} main(String[])
-    -Integer playGame()
-    -ArrayList<Row> getRowFromPlayer()
+    -playGame(): Integer
+    -getRowFromPlayer(): ArrayList<Row>
 }
 
 Game -right- Board
