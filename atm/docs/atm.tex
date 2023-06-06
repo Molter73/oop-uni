@@ -1,0 +1,50 @@
+\documentclass{article}
+
+\usepackage{xcolor}
+\usepackage{tikz}
+\usepackage{graphicx}
+\usepackage{float}
+
+\author{Mauro Ezequiel Moltrasio}
+
+\title{Diseño de un ATM}
+
+\begin{document}
+
+\maketitle
+
+En base al enunciado del problema, se pueden identificar 5 casos de uso
+representados en el siguiente diagrama:
+
+\begin{figure}[H]
+    \centering
+    \scalebox{.5}{
+        \input{build/uml.tex}
+    }
+\end{figure}
+
+Se procede entonces a definir dos clases principales:
+\begin{itemize}
+    \item Account: mantendrá el saldo de una cuenta y proveerá métodos para
+        interactuar con el mismo.
+    \item ATM: Funcionará como interfaz con el usuario, traduciendo el input
+        del usuario en mensajes para la cuenta e imprimiendo el resultado de
+        operaciones para que el usuario tenga feedback.
+\end{itemize}
+
+Adicionalmente, para poder manejar errores se definirán algunas excepciones
+personalizadas para que la cuenta pueda comunicar errores al ATM.
+
+Finalmente, las opciones del menú principal se definirán como un enum,
+garantizando así que todos los casos están manejados.
+
+El diagrama de clases final queda como sigue:
+
+\begin{figure}[H]
+    \centering
+    \scalebox{.5}{
+        \input{build/uml_001.tex}
+    }
+\end{figure}
+
+\end{document}
