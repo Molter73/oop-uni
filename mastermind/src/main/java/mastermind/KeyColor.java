@@ -7,17 +7,17 @@ package mastermind;
 public enum KeyColor implements Color {
   WHITE {
     public String getColor() {
-      return "White";
+      return useColors ? "\u001B[97m" + bigDot + "\u001B[0m" : "White ";
     }
   },
   BLACK {
     public String getColor() {
-      return "Black";
+      return useColors ? "\u001B[90m" + bigDot + "\u001B[0m" : "Black ";
     }
   },
   EMPTY {
     public String getColor() {
-      return "Empty";
+      return useColors ? smallDot : "Empty ";
     }
   };
 }

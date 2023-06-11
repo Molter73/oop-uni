@@ -1,9 +1,6 @@
 package mastermind;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.Arrays;
 
 /**
  * Main class for the MasterMind app.
@@ -11,7 +8,7 @@ import java.util.Arrays;
  * @author Mauro Ezequiel Moltrasio
  */
 public class App {
-  private BufferedReader br;
+  private UserInterface ui;
   private Integer score;
 
   /**
@@ -20,7 +17,7 @@ public class App {
    * <p>Will initialize the score counter and create a stream for reading stdin.
    */
   App() {
-    br = new BufferedReader(new InputStreamReader(System.in));
+    ui = new UserInterface();
     score = 0;
   }
 
@@ -33,19 +30,19 @@ public class App {
    * <p>Once the game is done, the score for the game is returned.
    *
    * @return The final score as an Integer.
-   * @throws NumberFormatException When the input by the user is not a number.
-   * @throws IOException On system IO errors.
    */
-  private Integer playGame() throws NumberFormatException, IOException {
+  private Integer playGame() {
     Board board = new Board();
     Integer finalScore;
 
     while (!board.isGameOver()) {
-      System.out.println(board.tryAnswer(getRowFromPlayer()));
+      ui.printBoard(board);
+      board.tryAnswer(ui.getRowFromPlayer());
     }
 
     finalScore = board.getFinalScore();
 
+    System.out.println(board.toString());
     System.out.println("El juego a terminado!");
     System.out.println("Puntaje acumulado: " + finalScore);
 
@@ -53,48 +50,12 @@ public class App {
   }
 
   /**
-   * Ask the user for the number of rounds they want to play. Return the number of rounds as an
-   * integer.
+   * Get the desired number of rounds a user wants to play.
    *
-   * @return The number of rounds to play.
-   * @throws NumberFormatException When the input by the user is not a number.
-   * @throws IOException On system IO errors.
+   * @return An integer with the number of rounds to play.
    */
-  private Integer getRounds() throws NumberFormatException, IOException {
-    System.out.print("Ingrese el número de rondas que desea jugar: ");
-
-    return Integer.parseInt(br.readLine());
-  }
-
-  /**
-   * Asks the player for individual pegs in order to create a row to play.
-   *
-   * @return A row formed from the pegs chosen by the player.
-   * @throws NumberFormatException When the input by the user is not a number.
-   * @throws IOException On system IO errors.
-   */
-  private Row getRowFromPlayer() throws NumberFormatException, IOException {
-    Peg[] pegs = new Peg[Row.PEG_COUNT];
-    Color[] colors = PlayableColor.values();
-
-    System.out.println("Forme su fila:");
-
-    {
-      int i = 1;
-      for (Color color : colors) {
-        System.out.println(i + ". " + color.getColor());
-        i++;
-      }
-    }
-
-    for (int i = 0; i < Row.PEG_COUNT; i++) {
-      Color color = colors[Integer.parseInt(br.readLine()) - 1];
-      pegs[i] = new Peg(color);
-
-      System.out.println(Arrays.toString(pegs));
-    }
-
-    return new Row(pegs);
+  private Integer getRounds() {
+    return ui.getRounds();
   }
 
   /**
@@ -106,7 +67,7 @@ public class App {
    * @throws NumberFormatException When the input by the user is not a number.
    * @throws IOException On system IO errors.
    */
-  public static void main(String[] args) throws NumberFormatException, IOException {
+  public static void main(String[] args) {
     App app = new App();
 
     System.out.println("Bienvenido a MasterMind!");

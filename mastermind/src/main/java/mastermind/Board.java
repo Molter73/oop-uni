@@ -13,7 +13,7 @@ public class Board {
   private static final Integer TOTAL_TRIES = 12;
   private ArrayList<Row> triedCodes;
   private ArrayList<Row> keyCodes;
-  private Row hiddenRow;
+  private Row hiddenCode;
   private boolean codeGuessed;
 
   private static final Row ALL_GUESSED_ROW =
@@ -25,6 +25,18 @@ public class Board {
             new Peg(KeyColor.BLACK),
             new Peg(KeyColor.BLACK),
           });
+
+  private static final Row EMPTY_ROW =
+      new Row(
+          new Peg[] {
+            new Peg(KeyColor.EMPTY),
+            new Peg(KeyColor.EMPTY),
+            new Peg(KeyColor.EMPTY),
+            new Peg(KeyColor.EMPTY),
+            new Peg(KeyColor.EMPTY),
+          });
+
+  static final String boardLimit = Color.useColors ? "+-+-+-+-+-+" : "+------+------+------+------+------+";
 
   /**
    * Main constructor for the Board.
@@ -42,9 +54,7 @@ public class Board {
       pegs[i] = new Peg(PlayableColor.getRandom());
     }
 
-    hiddenRow = new Row(pegs);
-
-    System.out.println(hiddenRow);
+    hiddenCode = new Row(pegs);
   }
 
   /**
@@ -70,8 +80,8 @@ public class Board {
    *
    * @return The row to be guessed.
    */
-  public Row getHiddenRow() {
-    return hiddenRow;
+  public Row getHiddenCode() {
+    return hiddenCode;
   }
 
   /**
@@ -124,13 +134,29 @@ public class Board {
     triedCodes.add(answer);
 
     Peg[] answerPegs = answer.getPegs();
-    Peg[] hiddenRowPegs = hiddenRow.getPegs();
+    Peg[] hiddenRowPegs = hiddenCode.getPegs();
     Peg[] hint = new Peg[Row.PEG_COUNT];
+
     for (int i = 0; i < Row.PEG_COUNT; i++) {
       if (answerPegs[i].equals(hiddenRowPegs[i])) {
         hint[i] = new Peg(KeyColor.BLACK);
       } else if (Arrays.asList(hiddenRowPegs).contains(answerPegs[i])) {
-        hint[i] = new Peg(KeyColor.WHITE);
+        int userCount = 0;
+        int hiddenCount = 0;
+
+        for (int j = 0; j < Row.PEG_COUNT; j++) {
+          if (answerPegs[j].equals(answerPegs[i])) {
+            userCount++;
+          }
+
+          if (hiddenRowPegs[j].equals(answerPegs[i])) {
+            hiddenCount++;
+          }
+        }
+
+        // If the user placed more elements of the same color than there are
+        // in the final answer, then the key is an empty peg.
+        hint[i] = userCount > hiddenCount ? new Peg(KeyColor.EMPTY) : new Peg(KeyColor.WHITE);
       } else {
         hint[i] = new Peg(KeyColor.EMPTY);
       }
@@ -144,5 +170,20 @@ public class Board {
     }
 
     return hintRow;
+  }
+
+  @Override
+  public String toString() {
+    String output = boardLimit + boardLimit + "\n";
+
+    for (int i = 0; i < TOTAL_TRIES ; i++) {
+      output += i >= triedCodes.size() ? EMPTY_ROW : triedCodes.get(i).toString();
+      output += i >= keyCodes.size() ? EMPTY_ROW : keyCodes.get(i).toString();
+      output += "\n";
+    }
+
+    output += boardLimit + boardLimit + "\n";
+
+    return output;
   }
 }

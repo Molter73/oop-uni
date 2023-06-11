@@ -1,7 +1,5 @@
 package mastermind;
 
-import java.util.Arrays;
-
 /** A single row in a MasterMind board. */
 public class Row {
   /** The amount of pegs that form a row. */
@@ -41,7 +39,13 @@ public class Row {
    */
   @Override
   public String toString() {
-    return Arrays.toString(pegs);
+    String output = "|";
+
+    for (Peg peg : pegs) {
+      output += peg.toString() + "|";
+    }
+
+    return output;
   }
 
   /**

@@ -1,6 +1,7 @@
 @startuml
 interface Color {
    +getColor(): String
+   +useColors: boolean
 }
 
 enum PlayableColor implements Color {
@@ -10,6 +11,7 @@ enum PlayableColor implements Color {
     +YELLOW
     +PINK
     +BROWN
+    +getRandom(): Color
 }
 
 enum KeyColor implements Color {
@@ -21,13 +23,16 @@ enum KeyColor implements Color {
 class Peg {
     -color: Color
     +Peg(Color)
-    +getColor(): Color
+    +toString(): String
+    +equals(Object): boolean
 }
 
 class Row {
     -pegs: Peg[]
     +Row(Peg[])
     +getPegs(): Peg[]
+    +toString(): String
+    +equals(Object): boolean
 }
 
 class Board {
@@ -35,23 +40,32 @@ class Board {
     -triedCodes: ArrayList<Row>
     -keyCodes: ArrayList<Row>
     -hiddenCode: Row
-    -codeGuessed: bool
-    +isGameOver(): bool
+    -codeGuessed: boolean
+    +isGameOver(): boolean
     +tryAnswer(Row): Row
     +getFinalScore(): Integer
     +getTriedCodes(): ArrayList<Row>
     +getKeyCodes(): ArrayList<Row>
     +getHiddenCode(): Row
+    +toString
 }
 
-class Game {
+class UserInterface {
+    -br: BufferedReader
+    +getRounds(): Integer
+    +getRowFromPlayer(): Row
+    +printBoard(Board): void
+}
+
+class App {
+    -ui: UserInterface
     -score: Integer
     {static} main(String[])
     -playGame(): Integer
-    -getRowFromPlayer(): ArrayList<Row>
 }
 
-Game -right- Board
+App -- Board
+App *-- UserInterface
 Board *-- "25" Row
 Row *-- "5" Peg
 Peg *-- Color
