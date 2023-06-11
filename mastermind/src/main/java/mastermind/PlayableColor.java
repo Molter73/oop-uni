@@ -28,6 +28,16 @@ public enum PlayableColor implements Color {
       return useColors ? "\u001B[95m" + bigDot + "\u001B[0m" : "Pink  ";
     }
   },
+  WHITE {
+    public String getColor() {
+      return useColors ? "\u001B[97m" + bigDot + "\u001B[0m" : "White ";
+    }
+  },
+  BLACK {
+    public String getColor() {
+      return useColors ? "\u001B[90m" + bigDot + "\u001B[0m" : "Black ";
+    }
+  },
   BROWN {
     public String getColor() {
       return useColors ? "\u001B[96m" + bigDot + "\u001B[0m" : "Brown ";
