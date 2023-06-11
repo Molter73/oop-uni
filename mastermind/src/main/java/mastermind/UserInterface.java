@@ -17,7 +17,7 @@ public class UserInterface {
    * @return The number of rounds to play.
    */
   public Integer getRounds() {
-    while(true) {
+    while (true) {
       try {
         System.out.print("Ingrese el número de rondas que desea jugar: ");
 
@@ -50,7 +50,7 @@ public class UserInterface {
     for (int i = 0; i < Row.PEG_COUNT; i++) {
       Color color;
 
-      while(true) {
+      while (true) {
         try {
           color = colors[Integer.parseInt(br.readLine()) - 1];
           break;

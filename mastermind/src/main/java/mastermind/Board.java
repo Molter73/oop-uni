@@ -36,7 +36,8 @@ public class Board {
             new Peg(KeyColor.EMPTY),
           });
 
-  static final String boardLimit = Color.useColors ? "+-+-+-+-+-+" : "+------+------+------+------+------+";
+  static final String boardLimit =
+      Color.useColors ? "+-+-+-+-+-+" : "+------+------+------+------+------+";
 
   /**
    * Main constructor for the Board.
@@ -176,7 +177,7 @@ public class Board {
   public String toString() {
     String output = boardLimit + boardLimit + "\n";
 
-    for (int i = 0; i < TOTAL_TRIES ; i++) {
+    for (int i = 0; i < TOTAL_TRIES; i++) {
       output += i >= triedCodes.size() ? EMPTY_ROW : triedCodes.get(i).toString();
       output += i >= keyCodes.size() ? EMPTY_ROW : keyCodes.get(i).toString();
       output += "\n";

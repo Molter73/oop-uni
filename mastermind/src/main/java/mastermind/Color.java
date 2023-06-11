@@ -3,7 +3,7 @@ package mastermind;
 /**
  * Interface for colors.
  *
- * This allows multiple types of {@link Peg}s to be used for different purposes.
+ * <p>This allows multiple types of {@link Peg}s to be used for different purposes.
  */
 public interface Color {
   public String getColor();
@@ -12,11 +12,10 @@ public interface Color {
   static final String smallDot = "\u2022";
 
   /**
-   * Read the MASTERMIND_USE_COLORS environment variable and parse it as a
-   * boolean.
+   * Read the MASTERMIND_USE_COLORS environment variable and parse it as a boolean.
    *
-   * @return false if the MASTERMIND_USE_COLORS environment variable is set to
-   *         "false", true otherwise.
+   * @return false if the MASTERMIND_USE_COLORS environment variable is set to "false", true
+   *     otherwise.
    */
   static boolean parseUseColors() {
     String useColors = System.getenv("MASTERMIND_USE_COLORS");
