@@ -59,33 +59,6 @@ public class Board {
   }
 
   /**
-   * Return the list of rows the player has played.
-   *
-   * @return The list of rows played so far.
-   */
-  public ArrayList<Row> getTriedCodes() {
-    return triedCodes;
-  }
-
-  /**
-   * Return the list of rows with hints for each row the user has played.
-   *
-   * @return The list of rows with hints to each played row.
-   */
-  public ArrayList<Row> getKeyCodes() {
-    return keyCodes;
-  }
-
-  /**
-   * Return the hidden row. This should not be shown to the player.
-   *
-   * @return The row to be guessed.
-   */
-  public Row getHiddenCode() {
-    return hiddenCode;
-  }
-
-  /**
    * Check whether the game has finished.
    *
    * <p>The game being finished means that either the player guessed the code or there are no more
@@ -142,22 +115,7 @@ public class Board {
       if (answerPegs[i].equals(hiddenRowPegs[i])) {
         hint[i] = new Peg(KeyColor.BLACK);
       } else if (Arrays.asList(hiddenRowPegs).contains(answerPegs[i])) {
-        int userCount = 0;
-        int hiddenCount = 0;
-
-        for (int j = 0; j < Row.PEG_COUNT; j++) {
-          if (answerPegs[j].equals(answerPegs[i])) {
-            userCount++;
-          }
-
-          if (hiddenRowPegs[j].equals(answerPegs[i])) {
-            hiddenCount++;
-          }
-        }
-
-        // If the user placed more elements of the same color than there are
-        // in the final answer, then the key is an empty peg.
-        hint[i] = userCount > hiddenCount ? new Peg(KeyColor.EMPTY) : new Peg(KeyColor.WHITE);
+        hint[i] = new Peg(KeyColor.WHITE);
       } else {
         hint[i] = new Peg(KeyColor.EMPTY);
       }

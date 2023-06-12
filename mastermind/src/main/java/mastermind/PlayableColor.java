@@ -15,7 +15,7 @@ public enum PlayableColor implements Color {
   },
   GREEN {
     public String getColor() {
-      return useColors ? "\u001B[92m" + bigDot + "\u001B[0m" : "Green ";
+      return useColors ? "\u001B[32m" + bigDot + "\u001B[0m" : "Green ";
     }
   },
   YELLOW {

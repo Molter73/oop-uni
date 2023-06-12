@@ -1,7 +1,5 @@
 package mastermind;
 
-import java.io.IOException;
-
 /**
  * Main class for the MasterMind app.
  *
@@ -42,9 +40,8 @@ public class App {
 
     finalScore = board.getFinalScore();
 
-    System.out.println(board.toString());
-    System.out.println("El juego a terminado!");
-    System.out.println("Puntaje acumulado: " + finalScore);
+    ui.printBoard(board);
+    ui.printGameOver(finalScore);
 
     return finalScore;
   }
@@ -64,13 +61,11 @@ public class App {
    * <p>Plays as many rounds of the game as the player wants and outputs the final score for them.
    *
    * @param args Arguments provided to the App. Currently ignored.
-   * @throws NumberFormatException When the input by the user is not a number.
-   * @throws IOException On system IO errors.
    */
   public static void main(String[] args) {
     App app = new App();
 
-    System.out.println("Bienvenido a MasterMind!");
+    app.ui.printWelcomeMessage();
 
     Integer rounds = app.getRounds();
 
@@ -78,7 +73,6 @@ public class App {
       app.score += app.playGame();
     }
 
-    System.out.println("Todas las rondas han terminado!");
-    System.out.println("Su puntaje final es: " + app.score);
+    app.ui.printFinalMessage(app.score);
   }
 }

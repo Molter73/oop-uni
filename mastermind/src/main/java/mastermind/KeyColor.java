@@ -16,7 +16,7 @@ public enum KeyColor implements Color {
   },
   EMPTY {
     public String getColor() {
-      return useColors ? smallDot : "Empty ";
+      return useColors ? smallDot : "      ";
     }
   };
 }

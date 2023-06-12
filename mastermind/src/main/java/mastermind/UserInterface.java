@@ -67,7 +67,7 @@ public class UserInterface {
         if (peg != null) {
           output += peg.toString();
         } else {
-          output += Color.useColors ? Color.smallDot : "Empty ";
+          output += Color.useColors ? Color.smallDot : "      ";
         }
         output += "|";
       }
@@ -85,5 +85,30 @@ public class UserInterface {
    */
   public void printBoard(Board board) {
     System.out.println(board.toString());
+  }
+
+  /** Print a welcome message for the player. */
+  public void printWelcomeMessage() {
+    System.out.println("Bienvenido a MasterMind!");
+  }
+
+  /**
+   * Print a message when all games are done.
+   *
+   * @param score The final score for the player.
+   */
+  public void printFinalMessage(int score) {
+    System.out.println("Todas las rondas han terminado!");
+    System.out.println("Su puntaje final es: " + score);
+  }
+
+  /**
+   * Print a message when a game is over.
+   *
+   * @param score The score the player got on the previous game.
+   */
+  public void printGameOver(int score) {
+    System.out.println("El juego a terminado!");
+    System.out.println("Puntaje acumulado: " + score);
   }
 }
