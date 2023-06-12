@@ -11,7 +11,7 @@ enum PlayableColor implements Color {
     +YELLOW
     +PINK
     +BROWN
-    +getRandom(): Color
+    +{static} getRandom(): Color
 }
 
 enum KeyColor implements Color {
@@ -44,10 +44,7 @@ class Board {
     +isGameOver(): boolean
     +tryAnswer(Row): Row
     +getFinalScore(): Integer
-    +getTriedCodes(): ArrayList<Row>
-    +getKeyCodes(): ArrayList<Row>
-    +getHiddenCode(): Row
-    +toString
+    +toString()
 }
 
 class UserInterface {
@@ -55,6 +52,9 @@ class UserInterface {
     +getRounds(): Integer
     +getRowFromPlayer(): Row
     +printBoard(Board): void
+    +printWelcomeMessage(): void
+    +printFinalMessage(int): void
+    +printGameOver(int): void
 }
 
 class App {
