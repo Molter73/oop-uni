@@ -24,12 +24,40 @@ public class ATM {
 	private Integer amount;
 	private String screenMessage;
 
+	/**
+	 * Handler used on buttons that should return the app to the main menu.
+	 */
 	private EventHandler<ActionEvent> handleBackToMain;
+
+	/**
+	 * Handler used on buttons that should accept a certain action.
+	 */
 	private EventHandler<ActionEvent> handleAccept;
+
+	/**
+	 * Handler used to place the ATM in the account creation state.
+	 */
 	private EventHandler<ActionEvent> handleAccountCreation;
+
+	/**
+	 * Handler used to place the ATM in the deposit state
+	 */
 	private EventHandler<ActionEvent> handleDeposit;
+
+	/**
+	 * Handler used to place the ATM in the withdrawal state.
+	 */
 	private EventHandler<ActionEvent> handleWithdrawl;
+
+	/**
+	 * Handler used to place the ATM in the check balance state.
+	 */
 	private EventHandler<ActionEvent> handleBalance;
+
+	/**
+	 * Handler used for capturing user input and adding it to the amount for the
+	 * transaction.
+	 */
 	private EventHandler<KeyEvent> handleKeyTyped;
 
 	@FXML
@@ -168,11 +196,20 @@ public class ATM {
 		};
 	}
 
+	/**
+	 * Initialize the ATM state to the main menu.
+	 */
 	@FXML
 	public void initialize() {
 		mainMenu();
 	}
 
+	/**
+	 * Set the ATM to the main menu state.
+	 *
+	 * This is done by setting the text displayed on the main screen and setting the
+	 * buttons to handle a specific action each.
+	 */
 	private void mainMenu() {
 		state = State.MAIN_MENU;
 
@@ -193,6 +230,12 @@ public class ATM {
 		buttonD.setText("Ver saldo");
 	}
 
+	/**
+	 * Set the ATM to display a generic screen with only 2 buttons enabled, one
+	 * accepts the action, the other one goes back to the main menu.
+	 *
+	 * @param msg The message to display in the ATM screen.
+	 */
 	private void acceptOrBack(String msg) {
 		atmFrame.setOnKeyTyped(handleKeyTyped);
 
@@ -212,6 +255,11 @@ public class ATM {
 		buttonD.setText("Volver al menú");
 	}
 
+	/**
+	 * Set the ATM to a generic screen with a single button enabled.
+	 *
+	 * @param msg The message to display in the ATM screen.
+	 */
 	private void genericBackScreen(String msg) {
 		atmFrame.setOnKeyTyped(null);
 
@@ -230,12 +278,22 @@ public class ATM {
 		buttonD.setText("Volver");
 	}
 
+	/**
+	 * Display an error screen.
+	 *
+	 * @param msg The message to display in the ATM screen.
+	 */
 	private void errorScreen(String msg) {
 		state = State.ERROR;
 
 		genericBackScreen(msg);
 	}
 
+	/**
+	 * Display a screen confirming the result of the last transaction.
+	 *
+	 * @param msg The message to display in the ATM screen.
+	 */
 	private void confirmationScreen(String msg) {
 		state = State.CONFIRMATION;
 
