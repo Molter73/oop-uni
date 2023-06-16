@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<HBox fx:id="atmFrame" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="atm.ATM">
+   <children>
+      <TextArea fx:id="screen" editable="false" prefHeight="100.0" prefWidth="250.0" styleClass="screen" stylesheets="@style.css" />
+      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="150.0" spacing="10.0">
+         <children>
+            <Button fx:id="buttonA" mnemonicParsing="false" prefWidth="125.0" />
+            <Button fx:id="buttonB" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefWidth="125.0" />
+            <Button fx:id="buttonC" layoutX="10.0" layoutY="35.0" mnemonicParsing="false" prefWidth="125.0" />
+            <Button fx:id="buttonD" layoutX="10.0" layoutY="60.0" mnemonicParsing="false" prefWidth="125.0" />
+         </children>
+      </VBox>
+   </children>
+</HBox>

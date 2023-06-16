@@ -1,226 +1,244 @@
 package atm;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.HBox;
 
-enum MenuOption {
-	CREATE_EMPTY_ACCOUNT,
+enum State {
 	CREATE_ACCOUNT,
 	DEPOSIT,
 	WITHDRAWAL,
 	CHECK_BALANCE,
-	EXIT,
+	MAIN_MENU,
+	ERROR,
+	CONFIRMATION,
 }
 
 public class ATM {
 	private Account account;
-	private BufferedReader br;
+	private State state;
+	private Integer amount;
+	private String screenMessage;
+
+	private EventHandler<ActionEvent> handleBackToMain;
+	private EventHandler<ActionEvent> handleAccept;
+	private EventHandler<ActionEvent> handleAccountCreation;
+	private EventHandler<ActionEvent> handleDeposit;
+	private EventHandler<ActionEvent> handleWithdrawl;
+	private EventHandler<ActionEvent> handleBalance;
+	private EventHandler<KeyEvent> handleKeyTyped;
+
+	@FXML
+	private HBox atmFrame;
+
+	@FXML
+	private Button buttonA;
+
+	@FXML
+	private Button buttonB;
+
+	@FXML
+	private Button buttonC;
+
+	@FXML
+	private Button buttonD;
+
+	@FXML
+	private TextArea screen;
 
 	public ATM() {
-		br = new BufferedReader(new InputStreamReader(System.in));
-	}
-
-	/**
-	 * Print the main menu to the user and get their selection.
-	 *
-	 * @return A {@link MenuOption} depending on the selected option.
-	 */
-	private MenuOption menu() {
-		while (true) {
-			System.out.println("Seleccione la opción deseada:");
-			System.out.println("1. Crear cuenta vacía");
-			System.out.println("2. Crear cuenta con saldo");
-			System.out.println("3. Realizar un depósito");
-			System.out.println("4. Realizar una retirada");
-			System.out.println("5. Ver saldo");
-			System.out.println("6. Salir");
-
-			Integer option;
-			try {
-				option = Integer.parseInt(br.readLine());
-			} catch (Exception e) {
-				System.out.println("Opción inválida: " + e.getMessage());
-				continue;
+		handleBackToMain = new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				mainMenu();
 			}
+		};
 
-			switch (option) {
-				case 1:
-					return MenuOption.CREATE_EMPTY_ACCOUNT;
-				case 2:
-					return MenuOption.CREATE_ACCOUNT;
-				case 3:
-					return MenuOption.DEPOSIT;
-				case 4:
-					return MenuOption.WITHDRAWAL;
-				case 5:
-					return MenuOption.CHECK_BALANCE;
-				case 6:
-					return MenuOption.EXIT;
-				default:
-					System.out.println("Opción inválida: " + option);
+		handleAccept = new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				switch (state) {
+					case CREATE_ACCOUNT:
+						try {
+							account = new Account(amount);
+						} catch (NegativeBalanceException e) {
+							errorScreen("Error creando cuenta:\n\n" + e.getMessage());
+							return;
+						}
+
+						confirmationScreen("Se creó una cuenta con € " + Account.amountToString(amount));
+						break;
+					case DEPOSIT:
+						account.deposit(amount);
+
+						confirmationScreen("Se depositaron € " + Account.amountToString(amount));
+						break;
+					case WITHDRAWAL:
+						try {
+							account.withdraw(amount);
+						} catch (InsufficientBalanceException e) {
+							errorScreen("Error en extracción:\n\n" + e.getMessage());
+							return;
+						}
+
+						confirmationScreen("Se extrajeron € " + Account.amountToString(amount));
+						break;
+					default:
+						// This should be impossible to reach, crash the app otherwise.
+						throw new RuntimeException("Received Accept event from unexpected state: " + state);
+				}
 			}
-		}
-	}
+		};
 
-	/**
-	 * Create a new {@link Account} with the provided balance.
-	 *
-	 * @param balance The balance the new {@link Account} should have.
-	 * @return A string describing the result of the operation.
-	 */
-	private String createAccount(Integer balance) {
-		try {
-			account = new Account(balance);
-		} catch (NegativeBalanceException e) {
-			return "Error: " + e.getMessage();
-		}
+		handleKeyTyped = new EventHandler<KeyEvent>() {
+			@Override
+			public void handle(KeyEvent event) {
+				if (event.getEventType() != KeyEvent.KEY_TYPED) {
+					// Ignore everything that is not a key typed
+					return;
+				}
 
-		return "Creada cuenta con balance €" + account.toString();
-	}
+				try {
+					amount = amount * 10 + Integer.parseInt(event.getCharacter());
+				} catch (NumberFormatException e) {
+					System.err.println("Error al parsear entero: " + e.getMessage());
+					return;
+				}
 
-	/**
-	 * Perform a deposit transaction on the current {@link Account}.
-	 *
-	 * @param amount The amount to deposit into the account.
-	 * @return A string describing the result of the operation.
-	 * @throws NullPointerException Thrown when no account is selected.
-	 */
-	private String deposit(Integer amount) throws NullPointerException {
-		account.deposit(amount);
-
-		return "Depósito correcto. Nuevo saldo: €" + account.toString();
-	}
-
-	/**
-	 * Perform a withdrawal transaction on the current {@link Account}.
-	 *
-	 * @param amount The amount to withdraw from the {@link Account}.
-	 * @return A string describing the result of the operation.
-	 * @throws NullPointerException Thrown when no account is selected.
-	 */
-	private String withdraw(Integer amount) throws NullPointerException {
-		try {
-			account.withdraw(amount);
-		} catch (InsufficientBalanceException e) {
-			return "Error: " + e.getMessage();
-		}
-
-		return "Extracción correcta. Nuevo saldo: €" + account.toString();
-	}
-
-	/**
-	 * Return a string with the balance in the {@link Account} in a human readable
-	 * format.
-	 *
-	 * @return a string with the balance in the {@link Account} in a human readable
-	 *         format.
-	 * @throws NullPointerException Thrown when no account is selected.
-	 */
-	private String checkBalance() throws NullPointerException {
-		return "Saldo disponible: €" + account.toString();
-	}
-
-	/**
-	 * Helper class for uniformly logging the result of a transaction.
-	 *
-	 * @param msg The message to log.
-	 */
-	private void logResult(String msg) {
-		System.out.println("El resultado de la operación es: " + msg);
-	}
-
-	/**
-	 * Ask the user to input an amount and turn it into an {@link Account}
-	 * compatible format.
-	 *
-	 * @return An integer with the input amount.
-	 * @throws IOException           Thrown when a system error occurs while reading
-	 *                               stdin.
-	 * @throws NumberFormatException Thrown when the number input by the user is in
-	 *                               a wrong format.
-	 */
-	private Integer getUserAmount() throws IOException, NumberFormatException {
-		System.out.print("Ingrese el monto deseado: €");
-		Float rawAmount = Float.parseFloat(br.readLine()) * 100;
-		return rawAmount.intValue();
-	}
-
-	/**
-	 * Run in a continuous loop, asking the user for input, performing transactions
-	 * and logging the result of said transactions.
-	 */
-	public void run() {
-		for (MenuOption option = menu(); option != MenuOption.EXIT; option = menu()) {
-			String result;
-			Integer amount;
-
-			switch (option) {
-				case CREATE_EMPTY_ACCOUNT:
-					result = createAccount(0);
-					break;
-				case CREATE_ACCOUNT:
-					try {
-						amount = getUserAmount();
-					} catch (IOException e) {
-						result = "Monto inválido: " + e.getMessage();
-						break;
-					} catch (NumberFormatException e) {
-						result = "Valor ingresado no es numérico: " + e.getMessage();
-						break;
-					}
-
-					result = createAccount(amount);
-					break;
-				case DEPOSIT:
-					try {
-						amount = getUserAmount();
-					} catch (IOException e) {
-						result = "Monto inválido: " + e.getMessage();
-						break;
-					} catch (NumberFormatException e) {
-						result = "Valor ingresado no es numérico: " + e.getMessage();
-						break;
-					}
-
-					try {
-						result = deposit(amount);
-					} catch (NullPointerException e) {
-						result = "Error: Debe crear una cuenta antes de operar";
-					}
-
-					break;
-				case WITHDRAWAL:
-					try {
-						amount = getUserAmount();
-					} catch (IOException e) {
-						result = "Monto inválido: " + e.getMessage();
-						break;
-					} catch (NumberFormatException e) {
-						result = "Valor ingresado no es numérico: " + e.getMessage();
-						break;
-					}
-
-					try {
-						result = withdraw(amount);
-					} catch (NullPointerException e) {
-						result = "Error: Debe crear una cuenta antes de operar";
-					}
-					break;
-				case CHECK_BALANCE:
-					try {
-						result = checkBalance();
-					} catch (NullPointerException e) {
-						result = "Error: Debe crear una cuenta antes de operar";
-					}
-					break;
-				default:
-					// If everything is handled properly (and it really should),
-					// we will never hit this point.
-					throw new RuntimeException("Opción inválida");
+				screen.setText(screenMessage + Account.amountToString(amount));
 			}
+		};
 
-			logResult(result);
-		}
+		handleAccountCreation = new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				state = State.CREATE_ACCOUNT;
+				amount = 0;
+
+				acceptOrBack("\n\nIngrese el monto inicial de la cuenta\n\n€ ");
+			}
+		};
+
+		handleDeposit = new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				if (account == null) {
+					errorScreen("Error: Cuenta inexistente");
+					return;
+				}
+
+				state = State.DEPOSIT;
+				amount = 0;
+
+				acceptOrBack("\n\nIngrese el monto que desea depositar\n\n€");
+			}
+		};
+
+		handleWithdrawl = new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				if (account == null) {
+					errorScreen("Error: Cuenta inexistente");
+					return;
+				}
+
+				state = State.WITHDRAWAL;
+				amount = 0;
+
+				acceptOrBack("\n\nIngrese el monto que desea retirar\n\n€");
+			}
+		};
+
+		handleBalance = new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				if (account == null) {
+					errorScreen("Error: Cuenta inexistente");
+					return;
+				}
+
+				state = State.CHECK_BALANCE;
+
+				genericBackScreen("\n\nSu saldo es: € " + account.toString());
+			}
+		};
+	}
+
+	@FXML
+	public void initialize() {
+		mainMenu();
+	}
+
+	private void mainMenu() {
+		state = State.MAIN_MENU;
+
+		atmFrame.setOnKeyTyped(null);
+
+		screen.setText("Elija un opción");
+
+		buttonA.setOnAction(handleAccountCreation);
+		buttonA.setText("Crear cuenta");
+
+		buttonB.setOnAction(handleDeposit);
+		buttonB.setText("Realizar depósito");
+
+		buttonC.setOnAction(handleWithdrawl);
+		buttonC.setText("Realizar retirada");
+
+		buttonD.setOnAction(handleBalance);
+		buttonD.setText("Ver saldo");
+	}
+
+	private void acceptOrBack(String msg) {
+		atmFrame.setOnKeyTyped(handleKeyTyped);
+
+		screenMessage = msg;
+		screen.setText(msg);
+
+		buttonA.setOnAction(null);
+		buttonA.setText("");
+
+		buttonB.setOnAction(null);
+		buttonB.setText("");
+
+		buttonC.setOnAction(handleAccept);
+		buttonC.setText("Aceptar");
+
+		buttonD.setOnAction(handleBackToMain);
+		buttonD.setText("Volver al menú");
+	}
+
+	private void genericBackScreen(String msg) {
+		atmFrame.setOnKeyTyped(null);
+
+		screen.setText(msg);
+
+		buttonA.setOnAction(null);
+		buttonA.setText("");
+
+		buttonB.setOnAction(null);
+		buttonB.setText("");
+
+		buttonC.setOnAction(null);
+		buttonC.setText("");
+
+		buttonD.setOnAction(handleBackToMain);
+		buttonD.setText("Volver");
+	}
+
+	private void errorScreen(String msg) {
+		state = State.ERROR;
+
+		genericBackScreen(msg);
+	}
+
+	private void confirmationScreen(String msg) {
+		state = State.CONFIRMATION;
+
+		genericBackScreen(msg);
 	}
 }
