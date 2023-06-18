@@ -3,14 +3,12 @@ left to right direction
 actor User as u
 
 package ATM {
-    usecase "Crear cuenta vacía" as CreateEmpty
-    usecase "Crear cuenta con saldo" as Create
+    usecase "Crear cuenta" as Create
     usecase "Ingresar dinero" as Deposit
     usecase "Retirar dinero" as Withdrawal
     usecase "Ver saldo" as CheckBalance
 }
 
-u --> CreateEmpty
 u --> Create
 u --> Deposit
 u --> Withdrawal
@@ -36,34 +34,49 @@ class Account {
     +{static} amountToString(Integer): String
 }
 
-enum MenuOption {
-    +CREATE_EMPTY_ACCOUNT
+enum State {
     +CREATE_ACCOUNT
     +DEPOSIT
     +WITHDRAWAL
     +CHECK_BALANCE
-    +EXIT
+    +MAIN_MENU
+    +ERROR
+    +CONFIRMATION
 }
 
 class ATM {
     -account: Account
-    -br: BufferedReader
-    -menu(): MenuOption
-    -createAccount(Integer): String
-    -deposit(Integer): String
-    -withdraw(Integer): String
-    -checkBalance(): String
-    -logResult(String): void
-    -getUserAmount(): Integer
-    +run(): void
+    -state: State
+    -amount: Integer
+    -screenMessage: String
+    -handleBackToMain: EventHandler<ActionEvent>
+    -handleAccept: EventHandler<ActionEvent>
+    -handleAccountCreation: EventHandler<ActionEvent>
+    -handleDeposit: EventHandler<ActionEvent>
+    -handleWithdrawl: EventHandler<ActionEvent>
+    -handleBalance: EventHandler<ActionEvent>
+    -handleKeyTyped: EventHandler<KeyEvent>
+    -atmFrame: HBox
+    -buttonA: Button
+    -buttonB: Button
+    -buttonC: Button
+    -buttonD: Button
+    -screen: TextArea
+    +initialize(): void
+    -mainMenu(): void
+    -acceptOrBack(String): void
+    -genericBackScreen(String): void
+    -errorScreen(String): void
+    -confirmationScreen(String): void
 }
 
-Class Main {
+Class App extends javafx.application.Application {
+    +start(Stage): void
     +{static} main(String[]): void
 }
 
-ATM -- MenuOption
 ATM *-- Account
+ATM *-- State
 Account -- Exception
-Main -- ATM
+App -- ATM
 @enduml
